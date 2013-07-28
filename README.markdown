@@ -4,6 +4,8 @@ An extension to enable toggling of comments on hacker news threads.
 
 ## Installation
 
+https://chrome.google.com/webstore/detail/hackertoggle/jppolmfnokmkfjndkngoikbcalphlcem?hl=en-US
+
 ## TODO
 
 HackerToggle doesn't change a lot the visual style of hacker news.
