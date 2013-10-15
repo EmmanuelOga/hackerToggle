@@ -66,6 +66,9 @@
     };
   };
 
+  // At times a "More" link appears that allows you to get to the next page of messages.
+  var displayingShowMorePage = (window.location.pathname == '/x');
+
   // Fetch all <tr> on hacker news markup corresponding to comments.
   // The tables and rows are not nested in HN, the nested effect comes
   // from an img with varying width. We'll need to convert the list
@@ -73,7 +76,8 @@
   function rowsAsNodes() {
     var nodes = [];
 
-    var $postRows = $('table:first>tbody:first').find('table:eq(2) tr');
+    var $postRows = $('table:first>tbody:first').
+      find('table:eq('+(displayingShowMorePage ? 1 : 2)+') tr');
 
     $postRows.each(function(index, tr){
       // Capture every other row.
@@ -94,6 +98,7 @@
   // This is en esence rebuilding an n-ary tree from a pre-order list of nodes
   // with their depth.
   function arrangeTree(nodes) {
+
     var nuberOfNodes = nodes.length;
 
     var root = new Node(-1);
@@ -101,6 +106,7 @@
     var stack = [root];
 
     for (var i = 0; i < nuberOfNodes; i++) {
+
       var currentNode = nodes[i];
 
       while (! (top.depth < currentNode.depth) ) {
@@ -142,7 +148,7 @@
     }
 
     // Paint clicked node background
-    node.elem.css('background-color', '#f0f0df');
+    node.elem.css('background-color', '#d0d0d0');
   };
 
   // Handle click / double click of comments.
@@ -152,7 +158,9 @@
   });
 
   // Insert collapse all / epand all butons.
-  $("tbody:eq(3)").prepend("<tr><td width=100%><a href='javascript:void(0)' class='collapseAll'>Collapse All</a>&nbsp;|&nbsp;<a class='expandAll' href='javascript:void(0)'>Expand All</a></td></tr>");
+  $("tbody:eq("+(displayingShowMorePage ? 2 : 3)+")").
+    prepend("<tr><td width=100%><a href='javascript:void(0)' class='collapseAll'>Collapse All</a>&nbsp;|&nbsp;<a class='expandAll' href='javascript:void(0)'>Expand All</a></td></tr>");
+
   $('.expandAll').click(function(){ tree.toggle(true); });
   $('.collapseAll').click(function(){
     for (var i = 0; i < tree.children.length; i++) {

@@ -2,13 +2,13 @@
   "manifest_version" : 2,
 
   "name": "HackerToggle",
-  "version": "1.0",
+  "version": "1.0.1",
   "description": "UI improvements for reading hackernews",
 
   "content_scripts" : [
     {
       "js" : ["inject.js"],
-      "matches" : ["https://news.ycombinator.com/item?*"],
+      "matches" : ["https://news.ycombinator.com/item?*", "https://news.ycombinator.com/thread?*", "https://news.ycombinator.com/x?*"],
       "run_at" : "document_idle",
       "all_frames" : false
     }
