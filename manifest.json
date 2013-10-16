@@ -2,7 +2,8 @@
   "manifest_version" : 2,
 
   "name": "HackerNews Thread Toggle",
-  "version": "1.0.2",
+  "short_name" : "HackerNewsTT",
+  "version": "1.0.3",
   "description": "UI improvements for reading hackernews",
 
   "content_scripts" : [
