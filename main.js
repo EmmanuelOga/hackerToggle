@@ -9,7 +9,7 @@
 
     this.isOpen = true;
     this.children = [];
-    this.children_count = 0;
+    this.childrenCount = 0;
 
     // Visit each node of the tree and run a callback with the node as parameter.
     // If the function returns true, the walking stops and the current node is
@@ -32,7 +32,7 @@
     }
 
     this.initToggle = function() {
-      if (this.children_count > 0) {
+      if (this.childrenCount > 0) {
         var $content = $('td.default', this.elem);
         $content.find('p:last').append("<font size=1>&nbsp;|&nbsp;<a class='toggle' href='javascript:void(0)'></a></font>");
         this.$toggle = $content.find('a.toggle')
@@ -44,7 +44,7 @@
     this.updateToggleText = function() {
       if (this.$toggle) {
         var prefix = this.isOpen ? 'collapse' : 'expand';
-        this.$toggle.text(prefix + ' [' + this.children_count + ']');
+        this.$toggle.text(prefix + ' [' + this.childrenCount + ']');
       }
     }
 
@@ -68,6 +68,7 @@
 
   // At times a "More" link appears that allows you to get to the next page of messages.
   var displayingShowMorePage = (window.location.pathname == '/x');
+  var tbIndex = { '/x' : 1, '/item' : 2, '/thread' : 2 };
 
   // Fetch all <tr> on hacker news markup corresponding to comments.
   // The tables and rows are not nested in HN, the nested effect comes
@@ -77,13 +78,19 @@
     var nodes = [];
 
     var $postRows = $('table:first>tbody:first').
-      find('table:eq('+(displayingShowMorePage ? 1 : 2)+') tr');
+      find('table:eq('+tbIndex[window.location.pathname]+') tr');
+
 
     $postRows.each(function(index, tr){
       // Capture every other row.
       if (index % 2 == 0) {
+        var $img = $('img', tr);
+
+        if ($img.length == 0)
+          return false;
+
         // img width determines comment nesting depth. Widths are multiples of 40.
-        var depth = $('img', tr).attr('width') / 40;
+        var depth = $img.attr('width') / 40;
 
         nodes.push(new Node(depth, $(tr)));
       }
@@ -117,7 +124,7 @@
       top.children.push(currentNode)
 
       for (var j = 0; j < stack.length; j++) {
-        stack[j].children_count += 1;
+        stack[j].childrenCount += 1;
       };
 
       if (currentNode.depth > top.depth) {
